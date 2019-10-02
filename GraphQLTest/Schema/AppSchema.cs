@@ -1,4 +1,5 @@
 ﻿using GraphQL;
+using GraphQLTest.Mutations;
 using GraphQLTest.Queries;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace GraphQLTest.Schema
         public AppSchema(IDependencyResolver resolver) : base(resolver)
         {
             Query = resolver.Resolve<PropertyQuery>();
+            Mutation = resolver.Resolve<PropertyMutation>();
         }
     }
 }
