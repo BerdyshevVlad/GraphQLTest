@@ -8,6 +8,7 @@ using GraphQL.Types;
 using GraphQLTest.DataAcess.Repositories;
 using GraphQLTest.DataAcess.Repositories.Interfaces;
 using GraphQLTest.Database;
+using GraphQLTest.GQLTypes.Landlord;
 using GraphQLTest.GQLTypes.Payment;
 using GraphQLTest.GQLTypes.Property;
 using GraphQLTest.Mutations;
@@ -41,16 +42,19 @@ namespace GraphQLTest
 
             services.AddTransient<IPropertyRepository, PropertyRepository>();
             services.AddTransient<IPaymentRepository, PaymentRepository>();
-
+            services.AddTransient<ILandlordRepository, LandlordRepository>();
 
 
             services.AddDbContext<GraphQLTest.Database.AppContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:GraphQLTestDb"]));
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
             services.AddSingleton<PropertyQuery>();
             services.AddSingleton<PropertyMutation>();
+            services.AddSingleton<LandlordMutation>();
             services.AddSingleton<PropertyType>();
             services.AddSingleton<PropertyInputType>();
+            services.AddSingleton<LandlordInputType>();
             services.AddSingleton<PaymentType>();
+            services.AddSingleton<LandlordType>();
             var sp = services.BuildServiceProvider();
             services.AddSingleton<ISchema>(new AppSchema(new FuncDependencyResolver(type => sp.GetService(type))));
         }

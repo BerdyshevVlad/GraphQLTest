@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace GraphQLTest.Database.Models
@@ -12,6 +13,9 @@ namespace GraphQLTest.Database.Models
         public string Street { get; set; }
         public decimal Value { get; set; }
         public string Family { get; set; }
+        public string LandlordId { get; set; }
+        [NotMapped]
+        public Landlord Landlord { get; set; }
         public ICollection<Payment> Payments { get; set; }
     }
 }

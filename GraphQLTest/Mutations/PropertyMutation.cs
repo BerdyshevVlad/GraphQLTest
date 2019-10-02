@@ -1,6 +1,7 @@
 ﻿using GraphQL.Types;
 using GraphQLTest.DataAcess.Repositories.Interfaces;
 using GraphQLTest.Database.Models;
+using GraphQLTest.GQLTypes.Landlord;
 using GraphQLTest.GQLTypes.Property;
 using System;
 using System.Collections.Generic;
@@ -31,14 +32,56 @@ namespace GraphQLTest.Mutations
 
 
 
-        public PropertyMutation(IPropertyRepository propertyRepository)
+
+
+
+
+
+
+
+
+
+
+        //        mutation($property: PropertyInputType!)
+        //        {
+        //            addproperty(property: $property) {
+        //                id,
+        //                name
+        //            }
+        //        }
+
+
+        //  {
+        //  "property":{
+        //    "name": "Big Towr 1",
+        //    "city":"Rostov",
+        //    "street":"Sobaka str",
+        //    "family":"Berdiev",
+        //    "value":300,
+
+        //  	"landlord":{
+        //    	"name":"Anastasya",
+        //    	"phoneNumber":"+380662156"
+        //  	}
+        //	}
+        //}
+
+
+
+        public PropertyMutation(IPropertyRepository propertyRepository, ILandlordRepository landlordRepository)
         {
             Field<PropertyType>("addproperty", arguments: new QueryArguments(
                 new QueryArgument<NonNullGraphType<PropertyInputType>> { Name = "property" }),
                 resolve: context =>
                  {
                      var property = context.GetArgument<Property>("property");
-                     return propertyRepository.Add(property);
+                     landlordRepository.Add(property.Landlord);
+                     property.LandlordId = property.Landlord.Id;
+                     var prop = propertyRepository.Add(property);
+
+
+                     return property;
+
                  });
         }
     }

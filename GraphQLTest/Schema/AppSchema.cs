@@ -14,6 +14,7 @@ namespace GraphQLTest.Schema
         {
             Query = resolver.Resolve<PropertyQuery>();
             Mutation = resolver.Resolve<PropertyMutation>();
+            //Mutation = resolver.Resolve<LandlordMutation>();
         }
     }
 }
