@@ -22,6 +22,24 @@ namespace GraphQLTest.Controllers
             _documentExecuter = documentExecuter;
         }
 
+
+        /// <summary>
+        ///  //in browser write this model
+        ///  https://localhost:/graphql/
+        //{
+        //  properties
+        //      {
+        //          name,
+        //          payments(last: 1 (any number)){
+        //              id,
+        //              value,
+        //              dateCreated
+        //          }
+        //      }
+        //}
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> PostResult([FromBody]GraphQLQuery query)
         {
