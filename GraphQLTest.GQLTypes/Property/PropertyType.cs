@@ -1,4 +1,5 @@
 ﻿using GraphQL.Types;
+using GraphQLTest.GQLTypes.Landlord;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,6 +16,8 @@ namespace GraphQLTest.GQLTypes.Property
             Field(x => x.City);
             Field(x => x.Family);
             Field(x => x.Street);
+
+            Field(x => x.Landlord, type: typeof(LandlordType));
         }
     }
 }

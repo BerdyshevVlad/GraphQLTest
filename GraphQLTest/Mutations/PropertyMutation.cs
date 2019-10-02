@@ -42,13 +42,18 @@ namespace GraphQLTest.Mutations
 
 
 
-        //        mutation($property: PropertyInputType!)
-        //        {
-        //            addproperty(property: $property) {
-        //                id,
-        //                name
-        //            }
+        //    mutation($property: PropertyInputType!)
+        //    {
+        //        addproperty(property: $property) {
+        //              id,
+        //              name,
+        //              landlord{
+        //                  id,
+        //                  name,
+        //                  phoneNumber
+        //              }
         //        }
+        //    }
 
 
         //  {
