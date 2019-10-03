@@ -9,9 +9,9 @@ namespace GraphQLTest.DataAcess.Repositories
 {
     public class PropertyRepository : IPropertyRepository
     {
-        private readonly Database.AppContext _db;
+        private readonly Database.AppSQLContext _db;
 
-        public PropertyRepository(Database.AppContext db)
+        public PropertyRepository(Database.AppSQLContext db)
         {
             _db = db;
         }

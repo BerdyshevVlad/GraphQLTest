@@ -9,5 +9,6 @@ namespace GraphQLTest.DataAcess.Repositories.Interfaces
     public interface ILandlordRepository
     {
         Landlord Add(Landlord landlord);
+        List<Landlord> GetAll();
     }
 }

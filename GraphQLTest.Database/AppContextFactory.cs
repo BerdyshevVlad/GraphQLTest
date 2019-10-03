@@ -8,20 +8,20 @@ using System.Text;
 
 namespace GraphQLTest.Database
 {
-    public class AppContextFactory : IDesignTimeDbContextFactory<AppContext>
+    public class AppContextFactory : IDesignTimeDbContextFactory<AppSQLContext>
     {
-        public AppContext CreateDbContext(string[] args)
+        public AppSQLContext CreateDbContext(string[] args)
         {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            var builder = new DbContextOptionsBuilder<AppContext>();
+            var builder = new DbContextOptionsBuilder<AppSQLContext>();
             var connectionString = configuration.GetConnectionString("GraphQLTestDb");
             builder.UseSqlServer(connectionString);
 
-            return new AppContext(builder.Options);
+            return new AppSQLContext(builder.Options);
         }
     }
 }

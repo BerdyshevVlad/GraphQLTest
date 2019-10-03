@@ -6,9 +6,9 @@ using System.Text;
 
 namespace GraphQLTest.Database
 {
-    public class AppContext : DbContext
+    public class AppSQLContext : DbContext
     {
-        public AppContext(DbContextOptions<AppContext> options)
+        public AppSQLContext(DbContextOptions<AppSQLContext> options)
                : base(options)
         {
         }

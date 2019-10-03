@@ -12,24 +12,16 @@ namespace GraphQLTest.DataAcess.Repositories
 {
     public class LandlordRepository : ILandlordRepository
     {
-        IMongoDatabase database; // база данных
-        IGridFSBucket gridFS;   // файловое хранилище
+        IMongoDatabase _database; // база данных
 
-        public LandlordRepository()
+        public LandlordRepository(IMongoDatabase database)
         {
-            string connectionString = "mongodb+srv://giftshare:Qwe123%21%21@cluster0-stn6x.mongodb.net/GraphQLTestDbMongo?retryWrites=true&w=majority";
-            var connection = new MongoUrlBuilder(connectionString);
-            // получаем клиента для взаимодействия с базой данных
-            MongoClient client = new MongoClient(connectionString);
-            // получаем доступ к самой базе данных
-            database = client.GetDatabase(connection.DatabaseName);
-            // получаем доступ к файловому хранилищу
-            gridFS = new GridFSBucket(database);
+            _database = database;
         }
 
         private IMongoCollection<Landlord> Landlords
         {
-            get { return database.GetCollection<Landlord>("Landlords"); }
+            get { return _database.GetCollection<Landlord>("Landlords"); }
         }
 
         public Landlord Add(Landlord landlord)
@@ -39,9 +31,12 @@ namespace GraphQLTest.DataAcess.Repositories
         }
 
 
-        public List<Landlord> Get()
+        public List<Landlord> GetAll()
         {
             return Landlords.Find(new BsonDocument()).ToList();
         }
+
+
+       
     }
 }

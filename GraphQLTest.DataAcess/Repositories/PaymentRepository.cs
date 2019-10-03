@@ -10,9 +10,9 @@ namespace GraphQLTest.DataAcess.Repositories
 {
     public class PaymentRepository : IPaymentRepository
     {
-        private readonly Database.AppContext _db;
+        private readonly Database.AppSQLContext _db;
 
-        public PaymentRepository(Database.AppContext db)
+        public PaymentRepository(Database.AppSQLContext db)
         {
             _db = db;
         }

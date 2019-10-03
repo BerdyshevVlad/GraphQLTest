@@ -23,6 +23,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 
 namespace GraphQLTest
 {
@@ -34,18 +35,26 @@ namespace GraphQLTest
         }
 
         public IConfiguration Configuration { get; }
+        IMongoDatabase database; // база данных
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
 
+            string connectionString = Configuration.GetValue<string>("MongoConnection:ConnectionString");
+            var connection = new MongoUrlBuilder(connectionString);
+            // получаем клиента для взаимодействия с базой данных
+            MongoClient client = new MongoClient(connectionString); 
+             // получаем доступ к самой базе данных
+             database = client.GetDatabase(connection.DatabaseName);
+
+
             services.AddTransient<IPropertyRepository, PropertyRepository>();
             services.AddTransient<IPaymentRepository, PaymentRepository>();
-            services.AddTransient<ILandlordRepository, LandlordRepository>();
+            services.AddTransient<ILandlordRepository>(x=>new LandlordRepository(database));
 
-
-            services.AddDbContext<GraphQLTest.Database.AppContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:GraphQLTestDb"]));
+            services.AddDbContext<GraphQLTest.Database.AppSQLContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:GraphQLTestDb"]));
             services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
             services.AddSingleton<PropertyQuery>();
             services.AddSingleton<PropertyMutation>();
@@ -60,11 +69,11 @@ namespace GraphQLTest
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, GraphQLTest.Database.AppContext db)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, GraphQLTest.Database.AppSQLContext db)
         {
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
-                var context = serviceScope.ServiceProvider.GetRequiredService<GraphQLTest.Database.AppContext>();
+                var context = serviceScope.ServiceProvider.GetRequiredService<GraphQLTest.Database.AppSQLContext>();
                 context.Database.EnsureCreated();
             }
 
@@ -75,7 +84,7 @@ namespace GraphQLTest
 
             app.UseGraphiQl();
             app.UseMvc();
-            db.EnsureSeedData();
+            db.EnsureSeedData(database);
         }
     }
 }
